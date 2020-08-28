@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grid {
+public class GridSystem {
     
     private int width;
     private int height;
     private float cellSize;
+    private Vector3 originPosition;
     private int[,] gridMatrix;
 
-    public Grid (int width, int height, float cellSize){
+    public GridSystem (int width, int height, float cellSize, Vector3 originPosition){
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
+        this.originPosition = originPosition;
 
         gridMatrix = new int[width, height];    //create the matrix
 
@@ -29,7 +31,13 @@ public class Grid {
 
 
     private Vector3 GetWorldPosition(int x, int y){
-        return new Vector3(x, y) * cellSize;
+        return new Vector3(x, y) * cellSize + originPosition;
+    }
+
+
+    private void GetXY(Vector3 worldPosition, out int x, out int y){
+        x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
+        y = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
     }
 
 
@@ -37,6 +45,14 @@ public class Grid {
         
         if (x >= 0 && x < width && y >= 0 && y < height){
             gridMatrix[x, y] = value;
+        }
+    }
+
+    public int GetValue(int x, int y){
+        if (x >= 0 && x < width && y >= 0 && y < height){
+            return gridMatrix[x, y];
+        }else{
+            return 0;
         }
     }
 
