@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridSystem {
+public class GridSystem<TGridObject> {
     
     private int width;
     private int height;
     private float cellSize;
     private Vector3 originPosition;
-    private int[,] gridMatrix;
+    private TGridObject[,] gridMatrix;  //type of the each grid
 
     public GridSystem (int width, int height, float cellSize, Vector3 originPosition){
         this.width = width;
@@ -16,7 +16,7 @@ public class GridSystem {
         this.cellSize = cellSize;
         this.originPosition = originPosition;
 
-        gridMatrix = new int[width, height];    //create the matrix
+        gridMatrix = new TGridObject[width, height];    //create the matrix
 
         for (int x = 0; x < gridMatrix.GetLength(0); x++){
             for (int y = 0; y < gridMatrix.GetLength(1); y++){
@@ -41,18 +41,18 @@ public class GridSystem {
     }
 
 
-    public void SetValue(int x, int y, int value) {
+    public void SetValue(int x, int y, TGridObject value) {
         
         if (x >= 0 && x < width && y >= 0 && y < height){
             gridMatrix[x, y] = value;
         }
     }
 
-    public int GetValue(int x, int y){
+    public TGridObject GetValue(int x, int y){
         if (x >= 0 && x < width && y >= 0 && y < height){
             return gridMatrix[x, y];
         }else{
-            return 0;
+            return default(TGridObject);
         }
     }
 
